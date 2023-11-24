@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>互動資通</title>
+    <!-- meta使用 viewport. RWD -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 引入 jQuery Mobile -->
+    <link
+      rel="stylesheet"
+      href="./package/jquerymobile/jquery.mobile-1.4.5.min.css"
+    />
+    <!-- 引入 jQuery -->
+    <script src="./package/jquery/jquery-1.11.3.min.js"></script>
+
+    <!-- 引入 jQuery Mobile -->
+    <script src="./package/jquerymobile/jquery.mobile-1.4.5.min.js"></script>
+
+    <!-- 引入html5-qrcode -->
+    <script src="./package/html5-qrcode.min.js"></script>
+  </head>
+  <body>
+    <div data-role="page" data-theme="a" id="QRcodeScan">
+      <div data-role="header">
+        <a href="./index.html" rel="external" data-icon="back">返回</a>
+        <h1>QRcode 掃描</h1>
+      </div>
+      <div data-role="content">
+        <div id="reader" width="600px"></div>
+        <div id="QRcodeResult">顯示結果</div>
+      </div>
+      <div data-role="footer">
+        <h4>&copy; 2024 互動資通服份有限公司</h4>
+      </div>
+    </div>
+    <script>
+      $(document).on("pagecreate", "#QRcodeScan", function () {
+        //寫入資料
+        function onScanSuccess(decodedText, decodedResult) {
+          // handle the scanned code as you like, for example:
+          console.log(`Code matched = ${decodedText}`, decodedResult);
+          $("#QRcodeResult").html(
+            "<p> decodedText：" +
+              decodedText +
+              " </p>" +
+              "<p> decodedResult：" +
+              decodedResult +
+              " </p>"
+          );
+        }
+
+        function onScanFailure(error) {
+          // handle scan failure, usually better to ignore and keep scanning.
+          // for example:
+          console.warn(`Code scan error = ${error}`);
+        }
+
+        let html5QrcodeScanner = new Html5QrcodeScanner(
+          "reader",
+          { fps: 10, qrbox: { width: 250, height: 250 } },
+          /* verbose= */ false
+        );
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+
+        //叫出資料
+        // $("#localdataBtn").on("tap", function () {
+        //   let account = localStorage.getItem("localAcount");
+        //   let psw = localStorage.getItem("localPsw");
+        //   $("#localResult").html(
+        //     "<p>" + "帳號:" + account + "密碼:" + psw + "</p>"
+        //   );
+        // });
+      });
+    </script>
+  </body>
+</html>
